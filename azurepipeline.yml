@@ -9,7 +9,7 @@ stages:
   jobs:
   - deployment: DevDeployment
     displayName: "Deploy ARM to Dev"
-    environment: DevEnv   # 🔐 Environment with manual approval set
+    environment: DevEnv   # 🔐 Environment wshmanual approval set
     strategy:
       runOnce:
         deploy:
