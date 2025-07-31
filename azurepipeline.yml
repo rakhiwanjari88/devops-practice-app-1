@@ -1,26 +1,28 @@
 trigger:
 - main
 
-name :$(Date:yyyyMMdd)$(Rev:.r)
+name: $(Date:yyyyMMdd)$(Rev:.r)
 
-pool:
-  vmImage: 'ubuntu-latest'
-
-steps:
-- task: AzureResourceManagerTemplateDeployment@3
-  inputs:
-    deploymentScope: 'Resource Group'
-    azureResourceManagerConnection: 'AzureRMServiceConnection' # 🔁 Replace with your connection name
-    subscriptionId: '7c37d74b-a989-4857-bc3d-7dec86170754'      # 🔁 Replace with your Subscription ID
-    action: 'Create Or Update Resource Group'
-    resourceGroupName: 'DevopsRG'
-    location: 'centralus'
-    templateLocation: 'Linked artifact'
-    csmFile: 'azuretemplate.json'
-    csmParametersFile: 'azureparameters.json'
-    deploymentMode: 'Incremental'
-
-
-
-
-
+stages:
+- stage: DeployToDev
+  displayName: "Deploy to Dev Environment"
+  jobs:
+  - deployment: DevDeployment
+    displayName: "Deploy ARM to Dev"
+    environment: DevEnv   # 🔐 Environment with manual approval set
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: AzureResourceManagerTemplateDeployment@3
+            inputs:
+              deploymentScope: 'Resource Group'
+              azureResourceManagerConnection: 'AzureRMServiceConnection'
+              subscriptionId: '7c37d74b-a989-4857-bc3d-7dec86170754'
+              action: 'Create Or Update Resource Group'
+              resourceGroupName: 'DevopsRG'
+              location: 'centralus'
+              templateLocation: 'Linked artifact'
+              csmFile: 'azuretemplate.json'
+              csmParametersFile: 'azureparameters.json'
+              deploymentMode: 'Incremental'
