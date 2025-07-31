@@ -9,12 +9,12 @@ stages:
   jobs:
   - deployment: DevDeployment
     displayName: "Deploy ARM to Dev"
-    environment: DevEnv   # 🔐 Environment wshmanual approval set
+    environment: DevEnv
     strategy:
       runOnce:
         deploy:
           steps:
-          - checkout: self
+          - checkout: self  # ✅ REQUIRED for deployment jobs to access repo files
           - task: AzureResourceManagerTemplateDeployment@3
             inputs:
               deploymentScope: 'Resource Group'
