@@ -1,20 +1,20 @@
 trigger:
 - main
 
-name: $(Date:yyyyMMdd)$(Rev:.r)
-
 stages:
 - stage: DeployToDev
-  displayName: "Deploy to Dev Environment"
   jobs:
   - deployment: DevDeployment
-    displayName: "Deploy ARM to Dev"
     environment: DevEnv
     strategy:
       runOnce:
         deploy:
           steps:
-          - checkout: self  # ✅ REQUIRED for deployment jobs to access repo files
+          - checkout: self
+          - script: |
+              echo "Listing repo contents:"
+              ls -la
+            displayName: '🔍 List files on agent'
           - task: AzureResourceManagerTemplateDeployment@3
             inputs:
               deploymentScope: 'Resource Group'
@@ -27,3 +27,4 @@ stages:
               csmFile: 'azuretemplate.json'
               csmParametersFile: 'azureparameters.json'
               deploymentMode: 'Incremental'
+              workingDirectory: '$(System.DefaultWorkingDirectory)'
