@@ -1,6 +1,8 @@
 trigger:
 - main
 
+name :$(Date:yyyyMMdd)$(Rev:.r)
+
 pool:
   vmImage: 'ubuntu-latest'
 
@@ -17,4 +19,7 @@ steps:
     csmFile: 'azuretemplate.json'
     csmParametersFile: 'azureparameters.json'
     deploymentMode: 'Incremental'
+
+
+
 
