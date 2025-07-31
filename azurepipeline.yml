@@ -1,0 +1,19 @@
+trigger:
+- main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+- task: AzureResourceManagerTemplateDeployment@3
+  inputs:
+    deploymentScope: 'Resource Group'
+    azureResourceManagerConnection: 'AzureRMServiceConnection' # 🔁 Replace with your connection name
+    subscriptionId: '7c37d74b-a989-4857-bc3d-7dec86170754'      # 🔁 Replace with your Subscription ID
+    action: 'Create Or Update Resource Group'
+    resourceGroupName: 'DevopsRG'
+    location: 'centralus'
+    templateLocation: 'Linked artifact'
+    csmFile: 'azuretemplate.json'
+    csmParametersFile: 'azureparameters.json'
+    deploymentMode: 'Incremental'
