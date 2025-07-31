@@ -17,3 +17,4 @@ steps:
     csmFile: 'azuretemplate.json'
     csmParametersFile: 'azureparameters.json'
     deploymentMode: 'Incremental'
+
